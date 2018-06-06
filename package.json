@@ -4,9 +4,9 @@
   "description": "The site of the company",
   "main": "app.js",
   "scripts": {
-    "test": "mocha tests/*.test.js",
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "test": "mocha src/tests/*.test.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
   "author": "Eugene",
   "license": "ISC",
