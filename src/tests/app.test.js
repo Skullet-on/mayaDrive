@@ -12,9 +12,9 @@ describe('/GET app', () => {
 		chai.request(server)
 			.get('/api/status')
 			.end((err, res) => {
-				res.should.have.status(200);
         expect(res).to.be.status(200);
-				res.body.should.be.a('object');
+				expect(res.body).to.be.a('object');
+				expect(res.body).to.deep.eql({'status': 'server up1'});
 			done();
 		});
 	});
