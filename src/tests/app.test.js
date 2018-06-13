@@ -1,6 +1,5 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const should = chai.should();
 const server = require('../app');
 
 const expect = chai.expect;
@@ -12,9 +11,9 @@ describe('/GET app', () => {
 		chai.request(server)
 			.get('/api/status')
 			.end((err, res) => {
-        expect(res).to.be.status(200);
+        		expect(res).to.be.status(200);
 				expect(res.body).to.be.a('object');
-				expect(res.body).to.deep.eql({'status': 'server up1'});
+				expect(res.body).to.deep.eql({'status': 'server up'});
 			done();
 		});
 	});
