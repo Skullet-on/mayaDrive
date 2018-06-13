@@ -11,9 +11,19 @@ describe('/GET app', () => {
 		chai.request(server)
 			.get('/api/status')
 			.end((err, res) => {
-        		expect(res).to.be.status(200);
+				expect(res).to.be.status(200);
 				expect(res.body).to.be.a('object');
 				expect(res.body).to.deep.eql({'status': 'server up'});
+			done();
+		});
+	});
+	
+	it('it should GET News is return JSON', (done) => {
+		chai.request(server)
+			.get('/api/news')
+			.end((err, res) => {
+				expect(res).to.be.status(200);
+				expect(res.body).to.be.a('array');
 			done();
 		});
 	});
