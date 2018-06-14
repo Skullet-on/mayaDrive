@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 4000;
-const models = require('../models').db;
+const models = require('../db/models').db;
 
 app.get('/api/status', (req, res) => {
 	res.send({status: "server up"});

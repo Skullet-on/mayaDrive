@@ -6,14 +6,14 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('/GET app', () => {
-	it('it should GET status is server up', (done) => {
+describe('/GET news', () => {
+	it('it should GET News is return JSON', (done) => {
 		chai.request(server)
-			.get('/api/status')
+			.get('/api/news')
 			.end((err, res) => {
 				expect(res).to.be.status(200);
-				expect(res.body).to.be.a('object');
-				expect(res.body).to.deep.eql({'status': 'server up'});
+				expect(res.body).to.be.a('array');
+				expect(res.body.length).to.be.equal(3);
 			done();
 		});
 	});
