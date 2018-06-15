@@ -8,7 +8,7 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "prepush": "npm test",
-    "prestart": "./node_modules/.bin/sequelize db:migrate && ./node_modules/.bin/sequelize db:seed:all"
+    "prestart": "./node_modules/.bin/sequelize db:migrate"
   },
   "author": "Eugene",
   "license": "ISC",
