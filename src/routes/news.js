@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 	const title = req.body.title;
 	const text = req.body.text;
+	console.log(title);
 	models.News.create({
 		title: req.body.title,
 		text: req.body.text,
