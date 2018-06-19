@@ -14,7 +14,7 @@ describe('/GET app', () => {
 				expect(res).to.be.status(200);
 				expect(res.body).to.be.a('object');
 				expect(res.body).to.deep.eql({'status': 'server up'});
-			done();
+				done();
 		});
 	});
 });

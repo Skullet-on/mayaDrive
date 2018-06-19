@@ -7,13 +7,13 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('News', () => {
-	it('it should GET News is return JSON', (done) => {
+	it('News GET /api/news should return JSON', (done) => {
 		chai.request(server)
 			.get('/api/news')
 			.end((err, res) => {
 				expect(res).to.be.status(200);
 				expect(res.body).to.be.a('array');
-			done();
+				done();
 		});
 	});
 
@@ -30,7 +30,9 @@ describe('News', () => {
 				expect(res.body).to.be.a('object');
 				expect(res.body).to.have.property('title');
 				expect(res.body).to.have.property('text');
-			done(err);
+				expect(res.body.title).to.deep.equal('testTitle');
+				expect(res.body.text).to.deep.equal('testText');
+				done(err);
 		});
 	});
 });
