@@ -20,7 +20,7 @@ describe('News', () => {
 	});
 
 	describe('POST api/news', () => {
-		it('it should create a news', (done) => {
+		it('should create a news', (done) => {
 			chai.request(server)
 				.post('/api/news')
 				.type('json')
