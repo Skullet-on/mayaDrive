@@ -29,12 +29,25 @@ describe('News', () => {
 					'text': 'testText'
 				})
 				.end((err, res) => {
-					expect(res).to.be.status(200);
+					expect(res).to.be.status(201);
 					expect(res.body).to.be.a('object');
 					expect(res.body).to.have.property('title');
 					expect(res.body).to.have.property('text');
 					expect(res.body.title).to.deep.equal('testTitle');
 					expect(res.body.text).to.deep.equal('testText');
+					done(err);
+			});
+		});
+
+		it('should give status 400', (done) => {
+			chai.request(server)
+				.post('/api/news')
+				.type('json')
+				.send({
+					'title': 'testTitle'
+				})
+				.end((err, res) => {
+					expect(res).to.be.status(400);
 					done(err);
 			});
 		});
