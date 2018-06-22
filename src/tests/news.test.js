@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app');
+const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
 
 const expect = chai.expect;
 
@@ -43,12 +44,15 @@ describe('News', () => {
 			chai.request(server)
 				.post('/api/news')
 				.type('json')
-				.send()
+				.send({
+					'title': '',
+					'text': ''
+				})
 				.end((err, res) => {
 					expect(res).to.be.status(400);
 					expect(res.body.errors).to.be.a('array');
-					expect(res.body.errors).to.include('title is empty');
-					expect(res.body.errors).to.include('text is empty');
+					expect(res.body.errors).to.include(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
+					expect(res.body.errors).to.include(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
 					done(err);
 			});
 		});
@@ -64,13 +68,13 @@ describe('News', () => {
 				.end((err, res) => {
 					expect(res).to.be.status(400);
 					expect(res.body.errors).to.be.a('array');
-					expect(res.body.errors).to.include('title should contain no more than 200 characters');
-					expect(res.body.errors).to.include('text should contain no more than 1000 characters');
+					expect(res.body.errors).to.include(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
+					expect(res.body.errors).to.include(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
 					done(err);
 			});
 		});
 
-		it('should give status 500 if bad request', (done) => {
+		it('should give status 500 if error', (done) => {
 			chai.request(server)
 				.post('/api/news')
 				.type('json')

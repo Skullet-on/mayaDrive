@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {News} = require('../models');
+const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
 
 router.get('/', (req, res) => {
 	News
@@ -11,16 +12,11 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	const TITLE_MAX_LENGTH = 200;
-	const TEXT_MAX_LENGTH = 1000;
-	const title = req.body.title;
-	const text = req.body.text;
+	const { title, text } = req.body;
 	let errors = [];
 
-	if (!title) errors.push('title is empty');
-	if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain no more than ${TITLE_MAX_LENGTH} characters`);
-	if (!text) errors.push('text is empty');
-	if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain no more than ${TEXT_MAX_LENGTH} characters`);
+	if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
+	if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
 
 	if (errors.length) return res.status(400).json({errors: errors});
 
