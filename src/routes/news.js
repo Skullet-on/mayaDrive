@@ -4,18 +4,27 @@ const {News} = require('../models');
 
 router.get('/', (req, res) => {
 	News
-	.findAll()
-	.then((news) => {
-		res.status(200).json(news);
-	});
+		.findAll()
+		.then((news) => {
+			res.status(200).json(news);
+		});
 });
 
 router.post('/', (req, res) => {
-	!req.body.title ? res.status(400).json({error: "'title' can not be empty"})
-		: req.body.title.lenght > 10 ? res.status(400).json({error: "'title' is too long"}) 
-		: !req.body.text ? res.status(400).json({error: "'text' can not be empty"})
-		: req.body.title.lenght > 10 ? res.status(400).json({error: "'text' is too long"})
-		: News
+	const TITLE_MAX_LENGTH = 200;
+	const TEXT_MAX_LENGTH = 1000;
+	const title = req.body.title;
+	const text = req.body.text;
+	let errors = [];
+
+	if (!title) errors.push('title is empty');
+	if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain no more than ${TITLE_MAX_LENGTH} characters`);
+	if (!text) errors.push('text is empty');
+	if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain no more than ${TEXT_MAX_LENGTH} characters`);
+
+	if (errors.length) return res.status(400).json({errors: errors});
+
+	News
 		.create({
 			title: req.body.title,
 			text: req.body.text,
