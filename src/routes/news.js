@@ -43,10 +43,19 @@ router.get('/:news_id', (req, res) => {
 });
 
 router.put('/:news_id', (req, res) => {
+	const { title, text } = req.body;
+	let errors = [];
+
+	if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
+	if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
+
+	if (errors.length) return res.status(400).json({errors: errors});
+
 	News
 		.update({
 			"title": req.body.title,
-			"text": req.body.text
+			"text": req.body.text,
+			"updatedAt": new Date()
 		},
 		{
 			returning: true, where: {id: req.params.news_id}
