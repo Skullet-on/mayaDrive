@@ -33,4 +33,22 @@ router.post('/', (req, res) => {
 		.catch(err => res.status(500).json({error: err}))
 });
 
+router.get('/:news_id', (req, res) => {
+	News
+		.findById(req.params.news_id)
+		.then(news => {
+			res.status(200).json(news)
+		})
+		.catch(err => res.status(500).send({error: err}))
+});
+
+router.delete('/:news_id', (req, res) => {
+	News
+		.destroy( { where: { id: req.params.news_id}} )
+		.then(news => {
+			res.status(210).json({ message: 'Successfully deleted' })
+		})
+		.catch(err => res.status(500).send({error: err}))
+});
+
 module.exports = router;
