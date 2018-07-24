@@ -20,6 +20,47 @@ describe('News', () => {
 		});
 	});
 
+	describe('GET /api/news/:news_id', () => {
+		it('should return JSON', (done) => {
+			chai.request(server)
+				.get('/api/news/4')
+				.end((err, res) => {
+					expect(res).to.be.status(200);
+					expect(res.body.id).to.be.equal(4);
+					done();
+			});
+		});
+	});
+
+	describe('PUT /api/news/:news_id', () => {
+		it('should have status 202', (done) => {
+			chai.request(server)
+				.put('/api/news/4')
+				.type('json')
+				.send({
+					'title': 'updated title',
+					'text': 'updated text'
+				})
+				.end((err, res) => {
+					expect(res).to.be.status(202);
+					done(err);
+			});
+		});
+		it('should have status 500', (done) => {
+			chai.request(server)
+				.put('/api/news/a')
+				.type('json')
+				.send({
+					'title': {'123': 'sdasdasd'},
+					'text': 'updated text'
+				})
+				.end((err, res) => {
+					expect(res).to.be.status(500);
+					done(err);
+			});
+		});
+	});
+
 	describe('POST api/news', () => {
 		it('should create a news', (done) => {
 			chai.request(server)
