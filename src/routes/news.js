@@ -42,6 +42,21 @@ router.get('/:news_id', (req, res) => {
 		.catch(err => res.status(500).send({error: err}))
 });
 
+router.put('/:news_id', (req, res) => {
+	News
+		.update({
+			"title": req.body.title,
+			"text": req.body.text
+		},
+		{
+			returning: true, where: {id: req.params.news_id}
+		})
+		.then(news => {
+			res.status(202).json(news)
+		})
+		.catch(err => res.status(500).send({error: err}))
+});
+
 router.delete('/:news_id', (req, res) => {
 	News
 		.destroy( { where: { id: req.params.news_id}} )
