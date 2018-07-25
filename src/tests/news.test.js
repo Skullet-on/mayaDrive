@@ -33,7 +33,7 @@ describe('News', () => {
 	});
 
 	describe('PUT /api/news/:news_id', () => {
-		it('should have status 202', (done) => {
+		it('should have status 204', (done) => {
 			chai.request(server)
 				.put('/api/news/4')
 				.type('json')
@@ -42,7 +42,7 @@ describe('News', () => {
 					'text': 'updated text'
 				})
 				.end((err, res) => {
-					expect(res).to.be.status(202);
+					expect(res).to.be.status(204);
 					done(err);
 			});
 		});
