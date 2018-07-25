@@ -33,16 +33,16 @@ router.post('/', (req, res) => {
 		.catch(err => res.status(500).json({error: err}))
 });
 
-router.get('/:news_id', (req, res) => {
+router.get('/:id', (req, res) => {
 	News
-		.findById(req.params.news_id)
+		.findById(req.params.id)
 		.then(news => {
 			res.status(200).json(news)
 		})
 		.catch(err => res.status(500).send({error: err}))
 });
 
-router.put('/:news_id', (req, res) => {
+router.put('/:id', (req, res) => {
 	const { title, text } = req.body;
 	let errors = [];
 
@@ -58,19 +58,19 @@ router.put('/:news_id', (req, res) => {
 			"updatedAt": new Date()
 		},
 		{
-			returning: true, where: {id: req.params.news_id}
+			returning: true, where: {id: req.params.id}
 		})
 		.then(news => {
-			res.status(202).json(news)
+			res.status(204).json(news)
 		})
 		.catch(err => res.status(500).send({error: err}))
 });
 
-router.delete('/:news_id', (req, res) => {
+router.delete('/:id', (req, res) => {
 	News
-		.destroy( { where: { id: req.params.news_id}} )
+		.destroy( { where: { id: req.params.id}} )
 		.then(news => {
-			res.status(210).json({ message: 'Successfully deleted' })
+			res.status(200).json({ message: 'Successfully deleted' })
 		})
 		.catch(err => res.status(500).send({error: err}))
 });
