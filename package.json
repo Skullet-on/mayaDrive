@@ -4,7 +4,7 @@
   "description": "The site of the company",
   "main": "app.js",
   "scripts": {
-    "test": "mocha src/tests/*.test.js --env NODE_ENV=test --exit",
+    "test": "mocha src/tests/*.test.js --env --exit",
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "prepush": "npm test",
