@@ -6,7 +6,8 @@ const {QUESTION_MAX_LENGTH, ANSWER_MAX_LENGTH} = require('../utils/variables');
 router.get('/', (req, res) => {
 	Faq
 		.findAll()
-		.then((faqs) => { res.status(200).json(faqs) });
+		.then(faqs => res.status(200).json(faqs))
+		.catch(err => res.status(500).json({error: err}))
 });
 
 router.post('/', (req, res) => {
@@ -20,19 +21,17 @@ router.post('/', (req, res) => {
 
 	Faq
 		.create({
-			question: req.body.question,
-			answer: req.body.answer,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			question: question,
+			answer: answer
 		})
-		.then(newFaqs => { res.status(201).json(newFaqs) })
+		.then(faq => res.status(201).json(faq))
 		.catch(err => res.status(500).json({error: err}))
 });
 
 router.get('/:id', (req, res) => {
 	Faq
 		.findById(req.params.id)
-		.then(faqs => { res.status(200).json(faqs) })
+		.then(faqs => res.status(200).json(faqs))
 		.catch(err => res.status(500).send({error: err}))
 });
 
@@ -47,9 +46,8 @@ router.put('/:id', (req, res) => {
 
 	Faq
 		.update({
-			"question": req.body.question,
-			"answer": req.body.answer,
-			"updatedAt": new Date()
+			"question": question,
+			"answer": answer
 		},
 		{
 			returning: true, where: {id: req.params.id}

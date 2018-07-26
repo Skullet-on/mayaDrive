@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		answer: {
 			allowNull: false,
-			type: DataTypes.STRING
+			type: DataTypes.TEXT
 		}
 	});
 	return Faq;

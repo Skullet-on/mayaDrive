@@ -1,16 +1,14 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 4000;
-const news = require('./routes/news');
-const faq = require('./routes/faq');
-const state = require('./routes/state');
 const bodyparser = require('body-parser');
+const { faq, news, state } = require('./routes');
 
 app.use(bodyparser.json());
 
-app.use('/api/', state);
-app.use('/api/news', news);
-app.use('/api/faq', faq);
+app.use('/api/', state)
+	.use('/api/news', news)
+	.use('/api/faq', faq);
 
 app.listen(port, () => {
 	console.log('Server is listening on port ' + port);
