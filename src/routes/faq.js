@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
 	Faq
 		.findById(req.params.id)
-		.then(faqs => {	res.status(200).json(faqs) })
+		.then(faqs => { res.status(200).json(faqs) })
 		.catch(err => res.status(500).send({error: err}))
 });
 
