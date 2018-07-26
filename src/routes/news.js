@@ -6,7 +6,8 @@ const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
 router.get('/', (req, res) => {
 	News
 		.findAll()
-		.then((news) => { res.status(200).json(news) });
+		.then((news) => res.status(200).json(news))
+		.catch(err => res.status(500).json({error: err}))
 });
 
 router.post('/', (req, res) => {
@@ -20,12 +21,10 @@ router.post('/', (req, res) => {
 
 	News
 		.create({
-			title: req.body.title,
-			text: req.body.text,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			title: title,
+			text: text
 		})
-		.then(newNews => { res.status(201).json(newNews) })
+		.then(news => res.status(201).json(news))
 		.catch(err => res.status(500).json({error: err}))
 });
 
@@ -47,21 +46,20 @@ router.put('/:id', (req, res) => {
 
 	News
 		.update({
-			"title": req.body.title,
-			"text": req.body.text,
-			"updatedAt": new Date()
+			"title": title,
+			"text": text
 		},
 		{
 			returning: true, where: {id: req.params.id}
 		})
-		.then(news => { res.status(204).json(news) })
+		.then(news => res.status(204).json(news))
 		.catch(err => res.status(500).send({error: err}))
 });
 
 router.delete('/:id', (req, res) => {
 	News
 		.destroy( { where: { id: req.params.id}} )
-		.then(news => { res.status(200).json({ message: 'Successfully deleted' }) })
+		.then(news => res.status(200).json({ message: 'Successfully deleted' }))
 		.catch(err => res.status(500).send({error: err}))
 });
 
