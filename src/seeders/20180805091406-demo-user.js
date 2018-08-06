@@ -3,7 +3,7 @@ module.exports = {
     return queryInterface.bulkInsert('users', [{
       firstName: 'Vasya',
       email: 'vasya@gmail.com',
-      password: 'vasya',
+      password_digest: 'vasya',
       isAdmin: false,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -11,14 +11,14 @@ module.exports = {
     {
       firstName: 'Eugene',
       email: 'eugene@gmail.com',
-      password: 'eugene',
+      password_digest: 'eugene',
       isAdmin: true,
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
       email: 'petya@gmail.com',
-      password: 'petya',
+      password_digest: 'petya',
       isAdmin: false,
       createdAt: new Date(),
       updatedAt: new Date()
