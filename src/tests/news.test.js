@@ -23,10 +23,10 @@ describe('News', () => {
   describe('GET /api/news/:news_id', () => {
     it('should return JSON', (done) => {
       chai.request(server)
-        .get('/api/news/4')
+        .get('/api/news/1')
         .end((err, res) => {
           expect(res).to.be.status(200);
-          expect(res.body.id).to.be.equal(4);
+          expect(res.body.id).to.be.equal(1);
           done();
       });
     });
@@ -35,7 +35,7 @@ describe('News', () => {
   describe('PUT /api/news/:news_id', () => {
     it('should have status 204', (done) => {
       chai.request(server)
-        .put('/api/news/4')
+        .put('/api/news/1')
         .type('json')
         .send({
           'title': 'updated title',
@@ -49,7 +49,7 @@ describe('News', () => {
 
     it('should give status 400 if text too long', (done) => {
       chai.request(server)
-        .put('/api/news/4')
+        .put('/api/news/1')
         .type('json')
         .send({
           'title': '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
@@ -66,7 +66,7 @@ describe('News', () => {
 
     it('should give status 400 if title or text is empty', (done) => {
       chai.request(server)
-        .put('/api/news/4')
+        .put('/api/news/1')
         .type('json')
         .send({
           'title': '',
