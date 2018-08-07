@@ -15,8 +15,7 @@ router.post('/', (req, res) => {
 	User
 		.create({
 			email: email,
-			password: password,
-			password_confirmation: password_confirmation,
+			password: password
 		})
 		.then(faq => res.status(201).json(faq))
 		.catch(err => res.status(500).json({error: err}))

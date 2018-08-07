@@ -15,7 +15,6 @@
   "dependencies": {
     "bcrypt": "^3.0.0",
     "express": "^4.16.3",
-    "npm": "^6.3.0",
     "sequelize": "^4.37.10",
     "sequelize-cli": "^4.0.0"
   },
