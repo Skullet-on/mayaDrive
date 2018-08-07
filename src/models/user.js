@@ -39,24 +39,20 @@ module.exports = (sequelize, DataTypes) => {
     	defaultValue: false
 		}
 	}, {
-		freezeTableName: true,
 		indexes: [{unique: true, fields: ['email']}],
-		instanceMethods: {
-			authenticate: value => {
-				if (bcrypt.compareSync(value, this.password_digest))
-					return this;
-				else
-					return false;
-			}
-		}
+    classMethods: {
+      associate: function(models) {
+        // associations can be defined here
+      }
+    }
 	});
-	
+
 	const hasSecurePassword = (user, options, callback) => {
 		if (user.password != user.password_confirmation) {
 			throw new Error("Password confirmation doesn't match Password");
 		}
 		bcrypt.hash(user.get('password'), 10, (err, hash) => {
-			if (err) return callback(err);
+			if (err) {return callback(err);}
 			user.set('password_digest', hash);
 			return callback(null, options);
 		});
