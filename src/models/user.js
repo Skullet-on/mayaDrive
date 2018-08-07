@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt');
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
@@ -29,12 +27,5 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     }
   });
-  User.beforeCreate((user, options, callback) => {
-    user.email = user.email.toLowerCase();
-    if (user.password)
-      hasSecurePassword(user, options, callback);
-    else
-      return callback(null, options);
-    })
   return User;
 };
