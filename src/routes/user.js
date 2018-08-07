@@ -3,22 +3,22 @@ const router = express.Router();
 const {User} = require('../models');
 
 router.get('/', (req, res) => {
-	User
-		.findAll()
-		.then(users => res.status(200).json(users))
-		.catch(err => res.status(500).json({error: err}))
+  User
+    .findAll()
+    .then(users => res.status(200).json(users))
+    .catch(err => res.status(500).json({error: err}))
 });
 
 router.post('/', (req, res) => {
-	const { email, password, password_confirmation } = req.body;
+  const { email, password } = req.body;
 
-	User
-		.create({
-			email: email,
-			password: password
-		})
-		.then(faq => res.status(201).json(faq))
-		.catch(err => res.status(500).json({error: err}))
+  User
+    .create({
+      email: email,
+      password: password
+    })
+    .then(users => res.status(201).json(users))
+    .catch(err => res.status(500).json({error: err}))
 });
 
 
