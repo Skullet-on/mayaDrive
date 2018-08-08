@@ -3,22 +3,35 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       validate: {
-        len: [1,50]
+        len: {
+          args: [1, 50],
+          msg: 'Please provide field within 1 to 50 characters.'
+        }
       }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      isUnique :true,
       validate: {
-        isEmail: true,
-        notEmpty: true,
-        len: [1,255]
+        isEmail: {
+          msg: "Email must be Email"
+        },
+        notEmpty: {
+          msg: "Email couldn't be empty"
+        }
       }
     },
     password: {
       type: DataTypes.STRING,
       validate: {
-        notEmpty: true
+        notEmpty: {
+          msg: "Password couldn't be empty"
+        },
+        len: {
+          args: [1, 20],
+          msg: 'Please provide field within 1 to 20 characters.'
+        }
       }
     },
     isAdmin: {
