@@ -18,8 +18,14 @@ router.post('/', (req, res) => {
       password: password
     })
     .then(users => res.status(201).json(users))
-    .catch(err => res.status(500).json({error: err.message}))
-});
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const errors = err.errors.map(e => e.message)     
+        return res.status(400).json(errors)
+      }
+      return res.sendStatus(500)
+    })
+  });
 
 
 module.exports = router;
