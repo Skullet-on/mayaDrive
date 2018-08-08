@@ -9,7 +9,7 @@ app.use(bodyparser.json());
 app.use('/api/', state)
   .use('/api/news', news)
   .use('/api/faq', faq)
-  .use('/api/user', user);
+  .use('/api/users', user);
 
 app.listen(port, () => {
   console.log('Server is listening on port ' + port);
