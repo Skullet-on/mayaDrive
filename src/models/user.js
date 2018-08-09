@@ -22,8 +22,15 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "Email couldn't be empty"
         },
-        isUnique: {
-          msg: "This Email is busy"
+        isUnique(value, next) {
+          User.find({
+            where: { email: value },
+            attributes: ['id']
+          }).done((user) => {
+            if (user)
+              return next('This Email has been already taken');
+            next();
+          });
         }
       }
     },
