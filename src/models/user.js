@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      isUnique :true,
+      unique: {
+        args: true,
+        msg: "This Email has been already taken"
+      },
       validate: {
         isEmail: {
           msg: "Email must be Email"
@@ -22,16 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "Email couldn't be empty"
         },
-        isUnique(value, next) {
-          User.find({
-            where: { email: value },
-            attributes: ['id']
-          }).done((user) => {
-            if (user)
-              return next('This Email has been already taken');
-            next();
-          });
-        }
       }
     },
     password: {

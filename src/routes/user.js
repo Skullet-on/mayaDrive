@@ -10,12 +10,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, isAdmin } = req.body;
 
   User
     .create({
       email: email,
-      password: password
+      password: password,
+      isAdmin: isAdmin
     })
     .then(users => res.status(201).json(users))
     .catch(err => {
