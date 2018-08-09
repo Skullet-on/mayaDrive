@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
@@ -27,10 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           msg: "Password couldn't be empty"
-        },
-        len: {
-          args: [1, 20],
-          msg: 'Please provide field within 1 to 20 characters.'
         }
       }
     },
@@ -40,5 +38,22 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     }
   });
+  
+  const generateHash = (password) => {
+    console.log("generate hash");
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+  };
+
+  const validPassword = (password) => {
+    console.log("valid password");
+    return bcrypt.compareSync(password, this.local.password);
+  };
+
+  User.beforeCreate((user, options) => {
+    return generateHash(user.password).then(hashedPw => {
+      user.password = hashedPw;
+    });
+  });
+
   return User;
 };
