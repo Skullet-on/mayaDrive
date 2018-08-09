@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty: {
           msg: "Email couldn't be empty"
+        },
+        isUnique: {
+          msg: "This Email is busy"
         }
       }
     },
@@ -40,16 +43,11 @@ module.exports = (sequelize, DataTypes) => {
   });
   
   const generateHash = (password) => {
-    console.log("generate hash");
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-  };
-
-  const validPassword = (password) => {
-    console.log("valid password");
-    return bcrypt.compareSync(password, this.local.password);
+    return bcrypt.hash(password, 10);
   };
 
   User.beforeCreate((user, options) => {
+    user.email = user.email.toLowerCase();
     return generateHash(user.password).then(hashedPw => {
       user.password = hashedPw;
     });
