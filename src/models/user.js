@@ -27,8 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         unique(value, next) {       
           User.find({
-            where: { email: value },
-            attributes: ['id']
+            where: { email: value }
           }).done((user) => {
             if (user) return next('This Email has been already taken');
             next();
