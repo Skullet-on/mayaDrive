@@ -10,12 +10,14 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { email, password } = req.body;
+  const { firstName, email, password, isAdmin } = req.body;
 
   User
     .create({
+      firstName: firstName,
       email: email,
-      password: password
+      password: password,
+      isAdmin: isAdmin
     })
     .then(users => res.status(201).json(users))
     .catch(err => {
@@ -23,9 +25,9 @@ router.post('/', (req, res) => {
         const errors = err.errors.map(e => e.message)     
         return res.status(400).json(errors)
       }
-      return res.sendStatus(500)
+      return res.sendStatus(500).json(err)
     })
-  });
+});
 
 
 module.exports = router;

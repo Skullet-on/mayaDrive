@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
@@ -5,20 +7,31 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: {
           args: [1, 50],
-          msg: 'Please provide field within 1 to 50 characters.'
+          msg: "Please provide 'firstName' field within 1 to 50 characters."
         }
       }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      isUnique :true,
+      unique: {
+        args: true,
+        msg: "This Email has been already taken"
+      },
       validate: {
         isEmail: {
           msg: "Email must be Email"
         },
         notEmpty: {
           msg: "Email couldn't be empty"
+        },
+        unique(value, next) {       
+          User.find({
+            where: { email: value }
+          }).done((user) => {
+            if (user) return next('This Email has been already taken');
+            next();
+          });
         }
       }
     },
@@ -27,18 +40,32 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           msg: "Password couldn't be empty"
-        },
-        len: {
-          args: [1, 20],
-          msg: 'Please provide field within 1 to 20 characters.'
         }
       }
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
+      validate: { 
+        boolean(val, next) {
+          if (typeof val !== "boolean") return next("NOT BOOLEAN");
+          next();
+        }
+      }
     }
   });
+  
+  const generateHash = (password) => {
+    return bcrypt.hash(password, 10);
+  };
+
+  User.beforeCreate((user, options) => {
+    user.email = user.email.toLowerCase();
+    return generateHash(user.password).then(hashedPw => {
+      user.password = hashedPw;
+    });
+  });
+
   return User;
 };
