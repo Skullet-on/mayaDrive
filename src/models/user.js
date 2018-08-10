@@ -30,8 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             where: { email: value },
             attributes: ['id']
           }).done((user) => {
-            if (user)
-              return next('This Email has been already taken');
+            if (user) return next('This Email has been already taken');
             next();
           });
         }
@@ -50,10 +49,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false,
       validate: { 
-        unique(val, next) {
-          const bool = typeof val;
-          if (bool !== "boolean")
-            return next("NOT BOOLEAN");
+        boolean(val, next) {
+          if (typeof val !== "boolean") return next("NOT BOOLEAN");
           next();
         }
       }
