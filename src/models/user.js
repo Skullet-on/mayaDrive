@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: {
           args: [1, 50],
-          msg: 'Please provide field within 1 to 50 characters.'
+          msg: "Please provide 'firstName' field within 1 to 50 characters."
         }
       }
     },
@@ -25,6 +25,16 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "Email couldn't be empty"
         },
+        unique(value, next) {       
+          User.find({
+            where: { email: value },
+            attributes: ['id']
+          }).done((user) => {
+            if (user)
+              return next('This Email has been already taken');
+            next();
+          });
+        }
       }
     },
     password: {
@@ -38,7 +48,15 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
+      validate: { 
+        unique(val, next) {
+          const bool = typeof val;
+          if (bool !== "boolean")
+            return next("NOT BOOLEAN");
+          next();
+        }
+      }
     }
   });
   
