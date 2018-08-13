@@ -4,8 +4,10 @@ const {User} = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 
-const generateHash = (password) => {
-  return bcrypt.hash(password, 10);
+const generateHash = (password, hash) => {
+  bcrypt.compare(password, hash, (err, res) => {
+  	return res;
+  });
 };
 
 router.post('/login', (req, res) => {
@@ -14,7 +16,7 @@ router.post('/login', (req, res) => {
   	email: email
   }}).then(user => {
   	console.log(user.password);
-  	if (bcrypt.compare(password, user.password)) 
+  	if (generateHash(password, user.password)) 
   		console.log("Found!");
   	else
   		console.log("Not found!");
