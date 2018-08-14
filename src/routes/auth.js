@@ -8,15 +8,15 @@ router.post('', (req, res) => {
   const { email, password } = req.body;
 
   const findUserByEmail = (email) => {
-    return User.findOne({ where: { email } })
+    return User.findOne({ where: { email: email.toLowerCase() } })
   }
 
-  findUserByEmail(email.toLowerCase())
+  findUserByEmail(email)
     .then(user => bcrypt.compare(password, user.password))
     .then(match => {
-      if (!match) res.status(401).json("Wrong Email or Password");
+      if (!match) return res.status(401).json("Wrong Email or Password");
       jwt.sign({user: req.user}, 'secretkey', (err, token) => {
-        res.status(200).json({
+        return res.status(200).json({
           token: token
         })
       })
