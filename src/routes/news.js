@@ -2,12 +2,20 @@ const express = require('express');
 const router = express.Router();
 const {News} = require('../models');
 const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
+const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
-  News
-    .findAll()
-    .then((news) => res.status(200).json(news))
-    .catch(err => res.status(500).json({error: err}))
+  const bearerHeader = req.headers.authorization;
+  const bearer = bearerHeader.split(" ");
+  const token = bearer[1];
+  jwt.verify(token, 'secretkey', (err, decoded) => {
+    if (err) return res.status(500).send({ err })
+  
+    News
+      .findAll()
+      .then((news) => res.status(200).json(news))
+      .catch(err => res.status(500).json({error: err}))
+  })
 });
 
 router.post('/', (req, res) => {
