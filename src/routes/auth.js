@@ -12,7 +12,10 @@ router.post('', (req, res) => {
   }
 
   findUserByEmail(email)
-    .then(user => bcrypt.compare(password, user.password))
+    .then(user => {
+      if (!user) return res.status(400).json("User not found")
+      bcrypt.compare(password, user.password)
+    })
     .then(match => {
       if (!match) return res.status(401).json("Wrong Email or Password");
       jwt.sign({user: req.user}, 'secretkey', (err, token) => {
@@ -21,7 +24,7 @@ router.post('', (req, res) => {
         })
       })
     })
-    .catch(err => res.status(500).json("Couldn't find this account"))
+    .catch(err => res.status(500).json("Server error"))
 });
 
 module.exports = router;
