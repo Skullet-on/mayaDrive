@@ -13,12 +13,12 @@ router.post('', (req, res) => {
 
   findUserByEmail(email)
     .then(user => {
-      if (!user) return res.status(400).json("User not found")
-      bcrypt.compare(password, user.password)
+      if (!user) return res.status(400).json("User not found");
+      return bcrypt.compare(password, user.password)
     })
     .then(match => {
       if (!match) return res.status(401).json("Wrong Email or Password");
-      jwt.sign({user: req.user}, 'secretkey', (err, token) => {
+      return jwt.sign({user: req.user}, 'secretkey', (err, token) => {
         return res.status(200).json({
           token: token
         })
