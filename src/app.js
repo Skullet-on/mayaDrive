@@ -10,7 +10,7 @@ app.use('/api/', state)
   .use('/api/news', news)
   .use('/api/faq', faq)
   .use('/api/users', user)
-  .use('/api/', auth);
+  .use('/api/auth', auth);
 
 app.listen(port, () => {
   console.log('Server is listening on port ' + port);
