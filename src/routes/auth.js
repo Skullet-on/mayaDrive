@@ -12,19 +12,17 @@ router.post('', (req, res) => {
   findUserByEmail(email)
     .then(user => {
       if (!user) return res.status(400).json("User not found");
-
+      payload = {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        isAdmin: user.isAdmin
+      };
       return bcrypt.compare(password, user.password);
     })
     .then(match => {
       if (!match) return res.status(401).json("Wrong Email or Password");
-
-      payload = {
-        id: req.body.id,
-        email: req.body.email,
-        firstName: req.body.firstName,
-        isAdmin: req.body.isAdmin
-      };
-
+      console.log(payload);
       jwt.sign(payload, secret, (err, token) => {
         return res.status(200).json({ token })
       })

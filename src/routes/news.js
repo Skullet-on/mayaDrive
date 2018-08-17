@@ -7,18 +7,10 @@ const passport = require('passport');
 const secret = process.env.SECRET_KEY;
 
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  const bearerHeader = req.headers.authorization;
-  const bearer = bearerHeader.split(" ");
-  const token = bearer[1];
-
-  jwt.verify(token, secret, (err, decoded) => {
-    if (err) return res.status(500).send({ err })
-  
-    News
-      .findAll()
-      .then((news) => res.status(200).json(news))
-      .catch(err => res.status(500).json({error: err}))
-  })
+  News
+    .findAll()
+    .then((news) => res.status(200).json(news))
+    .catch(err => res.status(500).json({error: err}))
 });
 
 router.post('/', (req, res) => {
