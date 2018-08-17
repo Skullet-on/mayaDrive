@@ -22,7 +22,6 @@ router.post('', (req, res) => {
     })
     .then(match => {
       if (!match) return res.status(401).json("Wrong Email or Password");
-      console.log(payload);
       jwt.sign(payload, secret, (err, token) => {
         return res.status(200).json({ token })
       })
