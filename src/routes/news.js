@@ -3,12 +3,13 @@ const router = express.Router();
 const {News} = require('../models');
 const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   const bearerHeader = req.headers.authorization;
   const bearer = bearerHeader.split(" ");
   const token = bearer[1];
-  jwt.verify(token, 'secretkey', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
     if (err) return res.status(500).send({ err })
   
     News

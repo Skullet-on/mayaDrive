@@ -1,23 +1,17 @@
-const strategy = (req, res, next) => {
-    const user = {name: 'Chuvak'};
-    console.log('asd');
-    if (req.body.email === 'eugene@gmail.com') return next(null, user);
-    
-    return next (null, false);
+const { ExtractJwt, Strategy } = require('passport-jwt');
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.SECRET_KEY
 }
 
-/*const checkAccess = (role) => {
-  return (req, res, next) => {
-    if (!req.user) return res.status(401).json('Unauthorized')
+const strategy = new Strategy(jwtOptions, (jwt_payload, next) => {
+  const user = jwt_payload;
 
-    делай свои валидационные дела
-     
-    return res.status(401).json(`Unauthorized`)
-  }
-}*/
-
-
+  if (req.body.email === 'eugene@gmail.com') return next(null, user);
+  
+  return next(null, false);
+});
 
 module.exports = {
-	strategy
+  strategy
 };
