@@ -7,8 +7,8 @@ const jwtOptions = {
 const strategy = new Strategy(jwtOptions, (jwt_payload, next) => {
   const user = jwt_payload;
 
-  if (req.body.email === 'eugene@gmail.com') return next(null, user);
-  
+  if (user.email === 'eugene@gmail.com') return next(null, user);
+  console.log(user);
   return next(null, false);
 });
 
