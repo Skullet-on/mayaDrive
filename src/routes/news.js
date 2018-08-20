@@ -5,8 +5,9 @@ const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const secret = process.env.SECRET_KEY;
+const {isAdmin} = require('../middleware');
 
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   News
     .findAll()
     .then((news) => res.status(200).json(news))

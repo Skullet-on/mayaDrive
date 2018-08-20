@@ -17,6 +17,13 @@ const strategy = new Strategy(jwtOptions, (jwt_payload, next) => {
 	  }).catch(err => res.status(500).json(`Server error`))
 });
 
+const isAdmin = (req, res, next) => {
+  if (req.user.isAdmin) return next();
+  return res.status(403).json(`Forbidden`)
+}
+
+
 module.exports = {
-  strategy
+  strategy,
+  isAdmin
 };
