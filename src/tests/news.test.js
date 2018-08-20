@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app');
-const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
+//const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
 
 const expect = chai.expect;
 
