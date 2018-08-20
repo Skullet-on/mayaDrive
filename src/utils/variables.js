@@ -1,7 +1,0 @@
-const TITLE_MAX_LENGTH = 200;
-const TEXT_MAX_LENGTH = 1000;
-
-module.exports = {
-  TITLE_MAX_LENGTH,
-  TEXT_MAX_LENGTH
-}
