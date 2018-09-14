@@ -1,27 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const {News} = require('../models');
-const {TITLE_MAX_LENGTH, TEXT_MAX_LENGTH} = require('../utils/variables');
-const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const secret = process.env.SECRET_KEY;
 const {isAdmin} = require('../middleware');
 
-router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
+router.get('/', (req, res) => {
   News
     .findAll()
     .then((news) => res.status(200).json(news))
     .catch(err => res.status(500).json({error: err}))
 });
 
-router.post('/', (req, res) => {
+router.post('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   const { title, text } = req.body;
-  let errors = [];
-
-  if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
-  if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
 
   News
     .create({
@@ -29,7 +21,13 @@ router.post('/', (req, res) => {
       text: text
     })
     .then(news => res.status(201).json(news))
-    .catch(err => res.status(500).json({error: err}))
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const errors = err.errors.map(e => e.message)     
+        return res.status(400).json(errors)
+      }
+      return res.sendStatus(500).json(err)
+    })
 });
 
 router.get('/:id', (req, res) => {
@@ -39,14 +37,8 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(500).send({error: err}))
 });
 
-router.put('/:id', (req, res) => {
-  const { title, text } = req.body;
-  let errors = [];
-
-  if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
-  if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
+router.put('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
+  const { id, title, text } = req.body;
 
   News
     .update({
@@ -54,15 +46,21 @@ router.put('/:id', (req, res) => {
       "text": text
     },
     {
-      returning: true, where: {id: req.params.id}
+      where: {id}
     })
-    .then(news => res.status(204).json(news))
-    .catch(err => res.status(500).send({error: err}))
+    .then(news => {return res.status(200).json({ message: 'Successfully edited' })})
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const errors = err.errors.map(e => e.message)     
+        return res.status(400).json(errors)
+      }
+      return res.sendStatus(500).json(err)
+    })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   News
-    .destroy( { where: { id: req.params.id}} )
+    .destroy( { where: { id: req.body.id}} )
     .then(news => res.status(200).json({ message: 'Successfully deleted' }))
     .catch(err => res.status(500).send({error: err}))
 });

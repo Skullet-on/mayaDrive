@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const {User} = require('../models');
+const passport = require('passport');
+const {isAdmin} = require('../middleware');
 
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   User
     .findAll()
     .then(users => res.status(200).json(users))

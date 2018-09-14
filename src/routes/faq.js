@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {Faq} = require('../models');
-const {QUESTION_MAX_LENGTH, ANSWER_MAX_LENGTH} = require('../utils/variables');
+const passport = require('passport');
+const {isAdmin} = require('../middleware');
 
 router.get('/', (req, res) => {
   Faq
@@ -10,14 +11,8 @@ router.get('/', (req, res) => {
     .catch(err => res.status(500).json({error: err}))
 });
 
-router.post('/', (req, res) => {
+router.post('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   const { question, answer } = req.body;
-  let errors = [];
-
-  if (!question || question.length > QUESTION_MAX_LENGTH) errors.push(`question should contain 1 - ${QUESTION_MAX_LENGTH} characters`);
-  if (!answer || answer.length > ANSWER_MAX_LENGTH) errors.push(`answer should contain 1 - ${ANSWER_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
 
   Faq
     .create({
@@ -25,7 +20,13 @@ router.post('/', (req, res) => {
       answer: answer
     })
     .then(faq => res.status(201).json(faq))
-    .catch(err => res.status(500).json({error: err}))
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const errors = err.errors.map(e => e.message)     
+        return res.status(400).json(errors)
+      }
+      return res.sendStatus(500).json(err)
+    })
 });
 
 router.get('/:id', (req, res) => {
@@ -35,14 +36,8 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(500).send({error: err}))
 });
 
-router.put('/:id', (req, res) => {
-  const { question, answer } = req.body;
-  let errors = [];
-
-  if (!question || question.length > QUESTION_MAX_LENGTH) errors.push(`question should contain 1 - ${QUESTION_MAX_LENGTH} characters`);
-  if (!answer || answer.length > ANSWER_MAX_LENGTH) errors.push(`answer should contain 1 - ${ANSWER_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
+router.put('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
+  const { id, question, answer } = req.body;
 
   Faq
     .update({
@@ -50,15 +45,21 @@ router.put('/:id', (req, res) => {
       "answer": answer
     },
     {
-      returning: true, where: {id: req.params.id}
+      where: {id}
     })
-    .then(faqs => { res.status(204).json(faqs) })
-    .catch(err => res.status(500).send({error: err}))
+    .then(faqs => { return res.status(200).json({ message: 'Successfully edited' }) })
+    .catch(err => {
+      if (err.name === "SequelizeValidationError") {
+        const errors = err.errors.map(e => e.message)     
+        return res.status(400).json(errors)
+      }
+      return res.sendStatus(500).json(err)
+    })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   Faq
-    .destroy( { where: { id: req.params.id}} )
+    .destroy( { where: { id: req.body.id}} )
     .then(faqs => { res.status(200).json({ message: 'Successfully deleted' }) })
     .catch(err => res.status(500).send({error: err}))
 });
