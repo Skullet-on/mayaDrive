@@ -12,12 +12,6 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   const { question, answer } = req.body;
-  let errors = [];
-
-  if (!question || question.length > QUESTION_MAX_LENGTH) errors.push(`question should contain 1 - ${QUESTION_MAX_LENGTH} characters`);
-  if (!answer || answer.length > ANSWER_MAX_LENGTH) errors.push(`answer should contain 1 - ${ANSWER_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
 
   Faq
     .create({
@@ -37,12 +31,6 @@ router.get('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
   const { question, answer } = req.body;
-  let errors = [];
-
-  if (!question || question.length > QUESTION_MAX_LENGTH) errors.push(`question should contain 1 - ${QUESTION_MAX_LENGTH} characters`);
-  if (!answer || answer.length > ANSWER_MAX_LENGTH) errors.push(`answer should contain 1 - ${ANSWER_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
 
   Faq
     .update({

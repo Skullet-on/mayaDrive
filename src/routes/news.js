@@ -16,12 +16,6 @@ router.get('/', passport.authenticate('jwt', { session: false }), isAdmin, (req,
 
 router.post('/', (req, res) => {
   const { title, text } = req.body;
-  let errors = [];
-
-  if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
-  if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
 
   News
     .create({
@@ -41,12 +35,6 @@ router.get('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
   const { title, text } = req.body;
-  let errors = [];
-
-  if (!title || title.length > TITLE_MAX_LENGTH) errors.push(`title should contain 1 - ${TITLE_MAX_LENGTH} characters`);
-  if (!text || text.length > TEXT_MAX_LENGTH) errors.push(`text should contain 1 - ${TEXT_MAX_LENGTH} characters`);
-
-  if (errors.length) return res.status(400).json({errors: errors});
 
   News
     .update({
