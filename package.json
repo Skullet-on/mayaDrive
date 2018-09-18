@@ -10,6 +10,10 @@
     "prepush": "npm test",
     "prestart": "./node_modules/.bin/sequelize db:migrate"
   },
+  "engines": {
+    "node": "8.11.4",
+    "npm": "5.6.0"
+  },
   "author": "Eugene",
   "license": "ISC",
   "dependencies": {
@@ -18,8 +22,10 @@
     "jsonwebtoken": "^8.3.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "sequelize": "^4.37.10",
-    "sequelize-cli": "^4.0.0"
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.38.0",
+    "sequelize-cli": "^4.1.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",

@@ -37,8 +37,8 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(500).send({error: err}))
 });
 
-router.put('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
-  const { id, title, text } = req.body;
+router.put('/:id', (req, res) => {
+  const { title, text } = req.body;
 
   News
     .update({

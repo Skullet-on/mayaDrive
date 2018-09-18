@@ -36,8 +36,8 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(500).send({error: err}))
 });
 
-router.put('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
-  const { id, question, answer } = req.body;
+router.put('/:id', (req, res) => {
+  const { question, answer } = req.body;
 
   Faq
     .update({

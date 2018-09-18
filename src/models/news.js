@@ -5,9 +5,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         len: {
-          args: [1, 500],
-          msg: "Please provide 'Title' field within 1 to 500 characters."
-        }
+          args: [1, 1000],
+          msg: "Please provide 'title' field within 1 to 1000 characters."
+        },
+        notEmpty: {
+          msg: "'title' couldn't be empty"
+        },
       }
     },
     text: {
@@ -15,9 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       validate: {
         len: {
-          args: [1, 10000],
-          msg: "Please provide 'Text' field within 1 to 10000 characters."
-        }
+          args: [1, 5000],
+          msg: "Please provide 'text' field within 1 to 5000 characters."
+        },
+        notEmpty: {
+          msg: "'text' couldn't be empty"
+        },
       }
     }
   });
