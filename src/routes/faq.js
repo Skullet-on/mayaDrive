@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {Faq} = require('../models');
+const {Faqs} = require('../models');
 const passport = require('passport');
 const {isAdmin} = require('../middleware');
 
 router.get('/', (req, res) => {
-  Faq
+  Faqs
     .findAll()
     .then(faqs => res.status(200).json(faqs))
     .catch(err => res.status(500).json({error: err}))
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 router.post('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
   const { question, answer } = req.body;
 
-  Faq
+  Faqs
     .create({
       question: question,
       answer: answer
@@ -30,7 +30,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), isAdmin, (req
 });
 
 router.get('/:id', (req, res) => {
-  Faq
+  Faqs
     .findById(req.params.id)
     .then(faqs => res.status(200).json(faqs))
     .catch(err => res.status(500).send({error: err}))
@@ -39,7 +39,7 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   const { question, answer } = req.body;
 
-  Faq
+  Faqs
     .update({
       "question": question,
       "answer": answer
@@ -58,7 +58,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/', passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
-  Faq
+  Faqs
     .destroy( { where: { id: req.body.id}} )
     .then(faqs => { res.status(200).json({ message: 'Successfully deleted' }) })
     .catch(err => res.status(500).send({error: err}))

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Statistic = sequelize.define('Statistic', {
+  const Statistics = sequelize.define('Statistics', {
     type: {
     	allowNull: false,
     	type: DataTypes.STRING,
@@ -27,5 +27,5 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
-  return Statistic;
+  return Statistics;
 };

@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Users = sequelize.define('Users', {
     firstName: {
       type: DataTypes.STRING,
       validate: {
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Email couldn't be empty"
         },
         unique(value, next) {       
-          User.find({
+          Users.find({
             where: { email: value }
           }).done((user) => {
             if (user) return next('This Email has been already taken');
@@ -60,12 +60,12 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.hash(password, 10);
   };
 
-  User.beforeCreate((user, options) => {
+  Users.beforeCreate((user, options) => {
     user.email = user.email.toLowerCase();
     return generateHash(user.password).then(hashedPw => {
       user.password = hashedPw;
     });
   });
 
-  return User;
+  return Users;
 };

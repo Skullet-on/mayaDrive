@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('releases', [{
+    return queryInterface.bulkInsert('Releases', [{
       url: "https://doc-00-8s-docs.googleusercontent.com/docs/securesc/ehp3pu1ih8oeokddj23hj56gk65osoan/2rpga9f26csnj7oigi26siojq89ghl2e/1536688800000/05626607987999881367/05626607987999881367/1bLwp9f8G0evbuBUMDdM0bojICkuXDzw2?e=download",
       version: "0.1.67",
       date: "2013-11-20 00:00:00.000 +00:00",
@@ -43,6 +43,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('releases', null, {});
+    return queryInterface.bulkDelete('Releases', null, {});
   }
 };

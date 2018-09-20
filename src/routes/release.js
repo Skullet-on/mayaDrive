@@ -3,7 +3,7 @@ const router = express.Router();
 const {Release} = require('../models');
 
 router.get('/', (req, res) => {
-  Release
+  Releases
     .findAll({
        order: [
         ['date', 'DESC'],
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const { url, version, date, whatsnew } = req.body;
 
-  Release
+  Releases
     .create({
       url: url,
       version: version,

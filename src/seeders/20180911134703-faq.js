@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('faqs', [{
+    return queryInterface.bulkInsert('Faqs', [{
       question: "What operating systems are supported?",
       answer: "Our product supports all modern OS'es including: Windows 7, Windows 8, Windows 8.1, Windows Server 2008 R2, Windows Server 2012 and Windows Server 2012 R2.",
       createdAt: new Date(),
@@ -45,6 +45,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('faqs', null, {});
+    return queryInterface.bulkDelete('Faqs', null, {});
   }
 };

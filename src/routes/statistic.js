@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {Statistic} = require('../models');
+const {Statistics} = require('../models');
 
 router.get('/', (req, res) => {
-  Statistic
+  Statistics
     .findAll()
     .then(statistics => res.status(200).json(statistics))
     .catch(err => res.status(500).json({error: err}))
@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const { type, version } = req.body;
 
-  Statistic
+  Statistics
     .create({
       type: type,
       version: version
