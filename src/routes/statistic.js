@@ -7,8 +7,8 @@ const nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'robo.testmail19@gmail.com',
-    pass: 'Qwerty123456!'
+    user: process.env.GMAIL,
+    pass: process.env.GPASS
   }
 })
 
@@ -42,10 +42,8 @@ router.post('/sendmail/', (req, res) => {
   }
   transporter.sendMail(mailOptions, function (err, res) {
     if(err){
-      res.status(500).json({error: err})
       console.log(err);
     } else {
-      res.status(200).json({message: 'Send successfull!'})
       console.log('Email Sent');
     }
   })
