@@ -3,7 +3,6 @@ const router = express.Router();
 const {Statistics} = require('../models');
 
 const nodemailer = require('nodemailer');
-const xoauth2 = require('xoauth2');
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -34,7 +33,7 @@ router.post('/', (req, res) => {
 
 router.post('/sendmail/', (req, res) => {
   const { email, name, subject, message } = req.body;
-  const body = 'Email: <' + email + '>\nMessage: ' + message;
+  const body = 'Email: <' + email + '>\nName: ' + name + '\nMessage: ' + message;
   var mailOptions = {
     from: 'RoboTest <robo.testmail19@gmail.com>',
     to: 'skullet-on@mail.ru',
