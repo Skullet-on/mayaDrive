@@ -21,4 +21,8 @@ router.post('/', (req, res) => {
     .catch(err => res.status(500).json({error: err}))
 });
 
+router.post('/sendmail/', (req, res) => {
+  const { email, name, subject, message } = req.body;
+});
+
 module.exports = router;
