@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const {Statistics} = require('../models');
 
+const nodemailer = require('nodemailer');
+const xoauth2 = require('xoauth2');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'robo.testmail19@gmail.com',
+    pass: 'Qwerty123456!'
+  }
+})
+
 router.get('/', (req, res) => {
   Statistics
     .findAll()
@@ -23,6 +34,22 @@ router.post('/', (req, res) => {
 
 router.post('/sendmail/', (req, res) => {
   const { email, name, subject, message } = req.body;
+  const body = 'Email: <' + email + '>\nMessage: ' + message;
+  var mailOptions = {
+    from: 'RoboTest <robo.testmail19@gmail.com>',
+    to: 'skullet-on@mail.ru',
+    subject: subject,
+    text: body
+  }
+  transporter.sendMail(mailOptions, function (err, res) {
+    if(err){
+      res.status(500).json({error: err})
+      console.log(err);
+    } else {
+      res.status(200).json({message: 'Send successfull!'})
+      console.log('Email Sent');
+    }
+  })
 });
 
 module.exports = router;
